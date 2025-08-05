@@ -1,89 +1,97 @@
 #  Personal Finance RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot that answers questions from the **"Personal Finance for Students"** PDF using semantic search and a language model.
+A **Retrieval-Augmented Generation (RAG)** chatbot that answers questions from the **"Personal Finance for Students"** PDF using semantic search and a language model.
 
-Built with:
--  LangChain
--  ChromaDB
--  Hugging Face Transformers (FLAN-T5)
--  Gradio for web UI
--  PDF as knowledge source
+---
+
+##  Built With
+
+-  LangChain  
+-  ChromaDB  
+-  Hugging Face Transformers (FLAN-T5)  
+-  Gradio (for web UI)  
+-  PyMuPDF (PDF as knowledge source)
 
 ---
 
 ##  Features
 
--  Upload and process a PDF
--  Retrieve relevant content with vector search
--  Answer questions using FLAN-T5
--  Chatbot UI with Gradio
+- Upload and process a PDF file  
+- Perform semantic search with ChromaDB  
+- Use `all-MiniLM-L6-v2` embeddings for chunk matching  
+- Generate answers with `Flan-T5`  
+- Chatbot UI with Gradio
 
 ---
 
-##  RAG Flow
+##  Project Structure
 
-```mermaid
-graph TD
-    A[User Question] --> B[Retriever (ChromaDB)]
-    B --> C[Relevant Chunks]
-    C --> D[Generator (Flan-T5)]
-    D --> E[Final Answer]
-
----
-
- Preview
-
- Project Structure
-
- fin-rag/
+```
+fin-rag/
 ├── data/                      # PDF files
 │   └── personal_finance_for_students.pdf
 ├── rag/                       # Core logic
 │   ├── __init__.py
-│   ├── pdf_reader.py
-│   ├── text_chunker.py
-│   ├── embed_store.py
-│   └── retriever_generator.py
-├── chroma_store/              # Persistent vector store
+│   ├── pdf_reader.py          # Read and extract PDF text
+│   ├── text_chunker.py        # Split text into chunks
+│   ├── embed_store.py         # Generate embeddings & store in ChromaDB
+│   └── retriever_generator.py # Retrieve chunks & generate answers
+├── chroma_store/              # Persistent vector store (ChromaDB)
 ├── app.py                     # CLI-based interaction
 ├── rag_ui.py                  # Gradio web app
+├── requirements.txt           # Python dependencies
 └── README.md
+```
 
 ---
 
-Installation
+##  Installation
 
+```bash
+# 1. Clone the repository
 git clone https://github.com/your-username/fin-rag.git
 cd fin-rag
 
+# 2. Create virtual environment (optional but recommended)
+python -m venv venv
+venv\Scripts\activate   # On Windows
+# or
+source venv/bin/activate  # On macOS/Linux
+
+# 3. Install dependencies
 pip install -r requirements.txt
+```
 
 ---
 
-How to Run
+##  How to Run
 
-🔹 CLI Mode
+###  Option 1: CLI Mode
 
+```bash
 python app.py
+```
 
-🔹 Gradio UI
+###  Option 2: Gradio Web UI
 
-python rag_ui.py
+```bash
+python -m rag.rag_ui
+```
+
+>  Make sure `rag_ui.py` imports from the `rag/` folder properly, and all dependencies are installed.
 
 ---
 
-Tech Stack
+##  Tech Stack
 
 | Category            | Technology / Tool                                   | Purpose                                       |
-| ------------------- | --------------------------------------------------- | --------------------------------------------- |
+|---------------------|-----------------------------------------------------|-----------------------------------------------|
 | **Programming**     | Python                                              | Core language for the RAG pipeline            |
-| **LLM Framework**   | LangChain (`langchain`, `langchain-community`)      | Framework for Retrieval-Augmented Generation  |
-| **Embeddings**      | `sentence-transformers` (`all-MiniLM-L6-v2`)        | For converting text to vector representations |
-| **Vector Store**    | ChromaDB (`chromadb`)                               | To store and retrieve vectorized chunks       |
-| **PDF Parsing**     | PyMuPDF (`pymupdf`)                                 | Extract text from PDF files                   |
-| **Model Inference** | Hugging Face Transformers (`transformers`, `torch`) | Load and run text generation models           |
-| **Frontend**        | Gradio                                              | Interactive web UI to ask questions           |
-| **Environment**     | Python virtual environment                          | Isolated setup for dependencies               |
-| **Version Control** | Git + GitHub                                        | Code management and collaboration             |
-
-
+| **LLM Framework**   | LangChain (`langchain`, `langchain-community`)      | Retrieval-Augmented Generation flow           |
+| **Embeddings**      | `sentence-transformers` (`all-MiniLM-L6-v2`)        | Text vectorization for semantic search        |
+| **Vector Store**    | ChromaDB (`chromadb`)                               | Store & retrieve vectorized document chunks   |
+| **PDF Parsing**     | PyMuPDF (`pymupdf`)                                 | Extract raw text from PDF                     |
+| **Model Inference** | Hugging Face Transformers (`transformers`, `torch`) | Run text generation models (e.g. FLAN-T5)     |
+| **Frontend**        | Gradio                                              | User interface for asking questions           |
+| **Environment**     | Python Virtual Env                                  | Manage isolated dependencies                  |
+| **Version Control** | Git + GitHub                                        | Code collaboration and versioning             |
